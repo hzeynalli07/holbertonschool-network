@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 # Configures an Ubuntu server with custom DNS mappings
-sed -i 's/127.0.0.1\s*localhost/127.0.0.2 localhost/' /etc/hosts
-echo "8.8.8.8 facebook.com" >> /etc/hosts
+cp /etc/hosts /tmp/hosts.tmp
+sed 's/127\.0\.0\.1\([ \t]*\)localhost/127.0.0.2\1localhost/' /tmp/hosts.tmp > /tmp/hosts.new
+cat /tmp/hosts.new > /etc/hosts
+if ! grep -q "facebook.com" /etc/hosts; then
+    echo "8.8.8.8 facebook.com" >> /etc/hosts
+fi
